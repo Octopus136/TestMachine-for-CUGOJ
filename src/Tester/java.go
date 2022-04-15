@@ -5,7 +5,7 @@ package Tester
 const (
 	jdk   = "javac"
 )
-const versions = "'java'"
+const javaVersions = "'java'"
 
 type JAVATester struct {
 	version     string
@@ -29,23 +29,32 @@ func NewJAVATester(version, path string, timeLimit, memoryLimit int64) JAVATeste
 
 func (tester JAVATester) Compile() TestInfo {
 	var cmd string
-	if(tester.version == version){
-		cmd = javac
-	}
-	else{
+	if(tester.version == "java"){
+		cmd = jdk
+	} else {
 		return TestInfo{
 			Statu:   "003",
-			Info:    "编译器版本选择错误，输入为 " + tester.version + " ,但是期望的值只包括" + versions,
+			Info:    "编译器版本选择错误，输入为 " + tester.version + " ,但是期望的值只包括" + javaVersions,
 			RunTime: -1,
 			Memory:  -1,
 		}
 	}
-	cmdArgs := cmd + " -d " + tester.out + " " + tester.path
+	cmdArgs := cmd + " " + tester.path
 	return CompileBase(cmdArgs, tester.timeLimit, tester.memoryLimit)
 }
 
 func (tester JAVATester) Run(in, out string) TestInfo {
-	runCmd := "java " + tester.out + ".class"
+	var classpath string
+	var filename string
+	i := len(tester.out) - 1
+	for ; tester.out[i] != '/'; i-- {}
+	for j := 0; j < i; j++{
+		classpath += string(tester.out[j])
+	} 
+	for j := i+1; j < len(tester.out); j++{
+		filename += string(tester.out[j])
+	}
+	runCmd := "java -classpath " + classpath + " " + filename
 	return RunBase(runCmd, in, out, tester.timeLimit, tester.memoryLimit)
 }
 

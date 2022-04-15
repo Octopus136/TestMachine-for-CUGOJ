@@ -10,7 +10,7 @@ const (
 	cpp17 = "-std=c++17"
 	cpp20 = "-std=c++2a"
 )
-const versions = "'c99','c11','cpp11','cpp14','cpp17','cpp20'"
+const gnuVersions = "'c99','c11','cpp11','cpp14','cpp17','cpp20'"
 
 type GUNTester struct {
 	version     string
@@ -61,7 +61,7 @@ func (tester GUNTester) Compile() TestInfo {
 	default:
 		return TestInfo{
 			Statu:   "003",
-			Info:    "编译器版本选择错误，输入为 " + tester.version + " ,但是期望的值只包括" + versions,
+			Info:    "编译器版本选择错误，输入为 " + tester.version + " ,但是期望的值只包括" + gnuVersions,
 			RunTime: -1,
 			Memory:  -1,
 		}
