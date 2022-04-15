@@ -7,7 +7,7 @@ import (
 	"strconv"
 )
 
-const types = "'gnu'"
+const types = "'gnu','java'"
 
 /*
 args[1] 编译器类型(gnu)
